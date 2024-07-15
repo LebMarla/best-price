@@ -1,0 +1,46 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Function to identify support and resistance levels
+def identify_levels(df, window=20):
+    df['Support'] = df['Low'].rolling(window=window, center=True).min()
+    df['Resistance'] = df['High'].rolling(window=window, center=True).max()
+    return df
+
+# Function to calculate the best entry price in a sideways market
+def calculate_best_entry(df):
+    # Assuming that the best entry is around the support level in a sideways market
+    df = identify_levels(df)
+    best_entry = df['Support'].iloc[-1]  # Taking the most recent support level as entry
+    return best_entry
+
+# Sample historical price data
+data = {
+    'Date': pd.date_range(start='2023-01-01', periods=100, freq='D'),
+    'Open': np.random.uniform(90, 110, 100),
+    'High': np.random.uniform(95, 115, 100),
+    'Low': np.random.uniform(85, 105, 100),
+    'Close': np.random.uniform(90, 110, 100),
+    'Volume': np.random.uniform(1000, 5000, 100)
+}
+
+# Convert to DataFrame
+df = pd.DataFrame(data)
+df.set_index('Date', inplace=True)
+
+# Calculate the best entry price
+best_entry_price = calculate_best_entry(df)
+print(f"The best entry price is: {best_entry_price}")
+
+# Plotting to visualize
+plt.figure(figsize=(12, 6))
+plt.plot(df['Close'], label='Close Price')
+plt.plot(df['Support'], label='Support Level', linestyle='--')
+plt.plot(df['Resistance'], label='Resistance Level', linestyle='--')
+plt.axhline(best_entry_price, color='green', linestyle='--', label=f'Best Entry Price: {best_entry_price:.2f}')
+plt.legend()
+plt.title('Price with Support and Resistance Levels')
+plt.xlabel('Date')
+plt.ylabel('Price')
+plt.show()
