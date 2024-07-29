@@ -1,4 +1,3 @@
-# best-price
 
 Explanation:
 Data Collection: This example generates random price data. You should replace this with real historical data for your specific coin.
