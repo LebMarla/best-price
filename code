@@ -44,3 +44,5 @@ plt.title('Price with Support and Resistance Levels')
 plt.xlabel('Date')
 plt.ylabel('Price')
 plt.show()
+
+# end
